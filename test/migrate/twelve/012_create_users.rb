@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CreateUsers < ActiveRecord::Migration[5.0]
   def self.up
-    create_table "users", :force => true do |t|
+    create_table 'users', force: true do |t|
       t.column :name, :string
     end
   end

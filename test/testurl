@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'net/http'
 require 'uri'
 
@@ -10,17 +12,25 @@ def open(url)
   http.request(req)
 end
 
-response = open(ARGV[0]) rescue nil
+response = begin
+             open(ARGV[0])
+           rescue StandardError
+             nil
+           end
 unless response
-  i=0
-  print "waiting.."
-  while i < 120 and not response
-    #puts 'RESPONSE:', response.inspect
-    print "."
+  i = 0
+  print 'waiting..'
+  while (i < 120) && !response
+    # puts 'RESPONSE:', response.inspect
+    print '.'
     STDOUT.flush
     i += 1
     sleep(1)
-    response = open(ARGV[0]) rescue nil
+    response = begin
+                 open(ARGV[0])
+               rescue StandardError
+                 nil
+               end
   end
   unless response
     puts "\nFAIL: timed out after waiting #{i} seconds"
@@ -32,32 +42,32 @@ end
 page_content = response.body
 
 puts "  response code: #{response.code} #{response.message}"
-response.header.each_header {|key,value| puts "  #{key}: #{value}" }
+response.header.each_header { |key, value| puts "  #{key}: #{value}" }
 puts "  body: #{page_content}"
 
-if ARGV[1] and ARGV[1] != ''
+if ARGV[1] && (ARGV[1] != '')
   if ARGV[1].split(',').include?(response.code)
     puts "PASS (response code was #{response.code} which matched #{ARGV[1]})"
   else
-    puts "FAIL (response code was #{response.code}, expected #{ARGV[1]})" 
+    puts "FAIL (response code was #{response.code}, expected #{ARGV[1]})"
     exit 1
   end
 end
 
-if ARGV[2] and ARGV[2] != ''
+if ARGV[2] && (ARGV[2] != '')
   if response.content_type == ARGV[2]
     puts "PASS (content type was #{response.content_type})"
   else
-    puts "FAIL (content type was #{response.content_type}, expected #{ARGV[2]})" 
+    puts "FAIL (content type was #{response.content_type}, expected #{ARGV[2]})"
     exit 2
   end
 end
 
-if ARGV[3] and ARGV[3] != ''
+if ARGV[3] && (ARGV[3] != '')
   if page_content.to_s.include? ARGV[3]
     puts "PASS (found #{ARGV[3]})"
   else
-    puts "FAIL (expected to find #{ARGV[3]}) - page contents:" , page_content.to_s, 'END-OF-CONTENTS'
+    puts "FAIL (expected to find #{ARGV[3]}) - page contents:", page_content.to_s, 'END-OF-CONTENTS'
     exit 3
   end
 end

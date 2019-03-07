@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'socket'
 
 port = 3555
-
 
 server = TCPServer.new port
 puts "fake_smtp_server: Waiting for one connection to port #{port} ..."
@@ -19,20 +19,20 @@ def receive(client)
   line
 end
 
-client = server.accept    # Wait for a client to connect
-send(client, "220 dummy-smtp.example.com SMTP")
+client = server.accept # Wait for a client to connect
+send(client, '220 dummy-smtp.example.com SMTP')
 cmd = receive(client)
 
 while cmd !~ /^QUIT\r/
-  if cmd =~ /^HELO(.*)\r/
-    send(client, "250 Welcome to a dummy smtp server")
+  if /^HELO(.*)\r/.match?(cmd)
+    send(client, '250 Welcome to a dummy smtp server')
   else
-    send(client, "502 I am so dumb I only understand HELO and QUIT")
+    send(client, '502 I am so dumb I only understand HELO and QUIT')
   end
   cmd = receive(client)
 end
-send(client, "221 Bye Bye")
+send(client, '221 Bye Bye')
 
 client.close
-puts "fake_smtp_server: Exiting now the conversation has finished."
+puts 'fake_smtp_server: Exiting now the conversation has finished.'
 exit 0

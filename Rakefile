@@ -1,14 +1,16 @@
-require "bundler/gem_tasks"
+# frozen_string_literal: true
 
-#require 'rubygems'
+require 'bundler/gem_tasks'
+
+# require 'rubygems'
 require 'rake'
 
-#tests as gem
+# tests as gem
 task :test do
   exec '/bin/bash', './test/test_with_railsapp'
 end
 
-task :default => :test
+task default: :test
 
 begin
   gem 'rdoc'
@@ -25,5 +27,5 @@ begin
     rdoc.rdoc_files.include('lib/**/*.rb')
   end
 rescue Gem::LoadError
-  puts "rdoc (or a dependency) not available. Install it with: gem install rdoc"
+  puts 'rdoc (or a dependency) not available. Install it with: gem install rdoc'
 end

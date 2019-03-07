@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module ActionDispatch::Routing
   class Mapper
-
     def health_check_routes(prefix = nil)
       HealthCheck::Engine.routes_explicitly_defined = true
       add_health_check_routes(prefix)
@@ -8,8 +9,7 @@ module ActionDispatch::Routing
 
     def add_health_check_routes(prefix = nil)
       HealthCheck.uri = prefix if prefix
-      match "#{HealthCheck.uri}(/:checks)(.:format)", :to => 'health_check/health_check#index', via: [:get, :post], :defaults => { :format => 'txt' }
+      match "#{HealthCheck.uri}(/:checks)(.:format)", to: 'health_check/health_check#index', via: %i[get post], defaults: { format: 'txt' }
     end
-
   end
 end

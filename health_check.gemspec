@@ -11,10 +11,10 @@ Gem::Specification.new do |gem|
   gem.authors       = ['Ian Heggie']
   gem.email         = ['ian@heggie.biz']
   gem.summary = 'Simple health check of Rails app for uptime monitoring with Pingdom, NewRelic, EngineYard or uptime.openacs.org etc.'
-  gem.description = <<-EOF
+  gem.description = <<-EOD
   	Fork of https://github.com/ianheggie/health_check.
     Simple health check of Rails app for uptime monitoring with Pingdom, NewRelic, EngineYard or uptime.openacs.org etc.
-  EOF
+  EOD
   gem.homepage      = 'https://github.com/FinalCAD/health_check'
 
   gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)

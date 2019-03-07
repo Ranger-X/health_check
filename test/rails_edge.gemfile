@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Gemfile for health_test testing
 
 source 'https://rubygems.org'
@@ -6,27 +8,27 @@ source 'https://rubygems.org'
 
 ruby RUBY_VERSION < '2.2.2' ? '2.2.2' : RUBY_VERSION
 
+gem 'rack'
 gem 'rails'
 gem 'rake'
-gem 'rack'
 
 group :development, :test do
   if defined?(JRUBY_VERSION)
-    gem 'jruby-openssl'
     gem 'activerecord-jdbcsqlite3-adapter'
+    gem 'jruby-openssl'
   else
     gem 'sqlite3'
   end
   gem 'shoulda'
-  
+
   # redis based checks
-  gem 'sidekiq', :require => !ENV['SIDEKIQ'].nil?
-  gem 'redis', :require => !ENV['REDIS_URL'].nil?
-  gem 'resque', :require => !ENV['RESQUE'].nil?
+  gem 'redis', require: !ENV['REDIS_URL'].nil?
+  gem 'resque', require: !ENV['RESQUE'].nil?
+  gem 'sidekiq', require: !ENV['SIDEKIQ'].nil?
   # s3 check
-  gem 'aws-sdk', :require => !ENV['AWS_ACCESS_KEY_ID'].nil?
+  gem 'aws-sdk', require: !ENV['AWS_ACCESS_KEY_ID'].nil?
 end
 
 # Initial Gemfile has therubyracer commented out
-gem 'therubyrhino', :platform => :jruby # REQUIRED
-gem 'therubyracer', :platform => :ruby # REQUIRED
+gem 'therubyracer', platform: :ruby # REQUIRED
+gem 'therubyrhino', platform: :jruby # REQUIRED
