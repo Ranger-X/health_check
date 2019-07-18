@@ -20,7 +20,7 @@ module HealthCheck
         begin
           errors = HealthCheck::Utils.process_checks(checks)
         rescue Exception => e
-          errors = e.message.blank? ? e.class.to_s : e.message.to_s
+          errors = "#{e.message.blank? ? e.class.to_s : e.message.to_s} backtrace: #{e.backtrace.inspect}"
         end
         response.headers['Cache-control'] = (public ? 'public' : 'private') + ', no-cache, must-revalidate' + (max_age > 0 ? ", max-age=#{max_age}" : '')
         if errors.blank?
