@@ -20,7 +20,7 @@ module HealthCheck
 
     # process an array containing a list of checks
     def self.process_checks(checks, called_from_middleware = false)
-      errors = ''
+      errors = ''.dup # FIX 'RuntimeError: can't modify frozen String' with .dup (I think it is not a bug)
       checks.each do |check|
         case check
         when 'and', 'site'

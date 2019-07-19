@@ -24,7 +24,7 @@ send(client, '220 dummy-smtp.example.com SMTP')
 cmd = receive(client)
 
 while cmd !~ /^QUIT\r/
-  if /^HELO(.*)\r/.match?(cmd)
+  if !!(/^HELO(.*)\r/.match(cmd))
     send(client, '250 Welcome to a dummy smtp server')
   else
     send(client, '502 I am so dumb I only understand HELO and QUIT')
