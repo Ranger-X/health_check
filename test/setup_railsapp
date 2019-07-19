@@ -93,13 +93,13 @@ export GEM_PATH="$tmp_dir/gems:`gem environment gempath`"
 echo Set GEM_PATH=$GEM_PATH
 
 echo Installing health_check as a gem into $tmp_dir/gems
-rm -f pkg/health_check-*.gem
+rm -f pkg/rails_health_check-*.gem
 if env GEM_HOME=$tmp_dir/gems $rake install
 then
     echo rake install passed
 else
-    echo rake install failed! running gem install pkg/health_check-*.gem manually to see error message:
-    env GEM_HOME=$tmp_dir/gems gem install pkg/health_check-*.gem
+    echo rake install failed! running gem install pkg/rails_health_check-*.gem manually to see error message:
+    env GEM_HOME=$tmp_dir/gems gem install pkg/rails_health_check-*.gem
     echo gem install worked, but flagging it as a FAIL anyway since rake install failed!
     exit 2
 fi
@@ -162,6 +162,7 @@ ActionMailer::Base.smtp_settings = { :address => "localhost", :port => 3555 }
 echo Adding an initializer for health_check gem ...
 mkdir -p config/initializers
 tee config/initializers/health_check.rb <<!
+require 'health_check'
 HealthCheck.setup do |config|
   config.success = "$success"
   config.smtp_timeout = 60.0
@@ -194,8 +195,8 @@ then
     echo Missing Gemfile!
     exit 2
 fi
-echo Adding health_check as gem to Gemfile...
-echo "gem 'health_check', :path => '$base_dir'" >> Gemfile
+echo Adding rails_health_check as gem to Gemfile...
+echo "gem 'rails_health_check', :path => '$base_dir'" >> Gemfile
 
 case "$RAILS_SERVER" in
 webrick|'')
@@ -410,8 +411,8 @@ if [ -s config/routes.rb ]; then
     echo "  # -----------------------------------------"
     echo "  # START OF SECTION FOR TESTING HEALTH_CHECK"
     echo "  get 'example(/:action(/:id))(.:format)' => 'example'"
+    echo "  health_check_routes"
     echo "  if File.exists?('$catchall_file')"
-    echo "    health_check_routes"
     echo "    # CATCH ALL ROUTE"
     echo "    get '*path', :to => 'example#catchall'"
     echo "  end"

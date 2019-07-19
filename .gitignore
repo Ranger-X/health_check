@@ -18,6 +18,7 @@ test/tmp
 test/version_tmp
 tmp
 .ruby-version
+.ruby-gemset
 
 ## PROJECT::SPECIFIC
 bin/
